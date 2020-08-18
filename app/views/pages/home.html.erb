@@ -1,2 +1,9 @@
-<h1>Pages#home</h1>
-<p>Find me in app/views/pages/home.html.erb</p>
+<div class="container">
+  <% @weeks.each do |week_num, days| %>
+    <h3>Week <%= week_num %></h3>
+
+    <% days.each do |work_day| %>
+      <p><%= work_day.date.strftime('%A, %b %d') %></p>
+    <% end %>
+  <% end %>
+</div>
