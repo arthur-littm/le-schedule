@@ -10,10 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_18_105753) do
+ActiveRecord::Schema.define(version: 2020_08_18_113625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "events", force: :cascade do |t|
+    t.bigint "work_day_id", null: false
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["work_day_id"], name: "index_events_on_work_day_id"
+  end
+
+  create_table "slots", force: :cascade do |t|
+    t.bigint "work_day_id", null: false
+    t.integer "role"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_slots_on_user_id"
+    t.index ["work_day_id"], name: "index_slots_on_work_day_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -27,4 +45,14 @@ ActiveRecord::Schema.define(version: 2020_08_18_105753) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "work_days", force: :cascade do |t|
+    t.date "date"
+    t.boolean "open", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  add_foreign_key "events", "work_days"
+  add_foreign_key "slots", "users"
+  add_foreign_key "slots", "work_days"
 end
